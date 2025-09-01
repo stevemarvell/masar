@@ -1,9 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const leftBar = document.getElementById("left-bar");
   const collapseBtn = document.getElementById("collapse-left-btn");
   let collapsed = false;
 
-  function setCollapsed(state) {
+  function setCollapsed(state: boolean) {
     if (leftBar) {
       leftBar.classList.toggle("collapsed", state);
     }
@@ -16,11 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Canvas fix: explicitly type/cast before using getContext!
-  const canvas = document.getElementById("world-canvas");
-  if (canvas && 'getContext' in canvas) {
-    // @ts-ignore (if you ever see a warning in .js)
-    const ctx = /** @type {HTMLCanvasElement} */ (canvas).getContext("2d");
+  // Canvas fix: correct TS typing
+  const canvas = document.getElementById("world-canvas") as HTMLCanvasElement | null;
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext("2d");
     if (ctx) {
       ctx.fillStyle = "#03396c";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
