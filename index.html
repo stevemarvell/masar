@@ -3,17 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>MASAR MVP</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome for block icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <div class="root">
-  <header class="top-bar">Top Bar</header>
-  <aside class="left-bar">Left Bar</aside>
-  <main class="main-panel">
-    <canvas id="world-canvas"></canvas>
-  </main>
-  <footer class="bottom-bar">Bottom Bar</footer>
+  <div class="left-bar" id="left-bar">
+    <button class="collapse-btn" id="collapse-left-btn">&#9776;</button>
+    <div class="block-list" id="block-list">
+      <div class="block">
+        <i class="fa-solid fa-map block-icon"></i>
+        <span class="block-label">Block 1</span>
+      </div>
+      <div class="block">
+        <i class="fa-solid fa-layer-group block-icon"></i>
+        <span class="block-label">Block 2</span>
+      </div>
+      <div class="block">
+        <i class="fa-solid fa-gear block-icon"></i>
+        <span class="block-label">Block 3</span>
+      </div>
+    </div>
+  </div>
+  <div class="top-bar"><span class="bar-content">MA SAR</span></div>
+  <div class="main-panel">
+    <div class="canvas-container">
+      <canvas id="world-canvas" width="600" height="400"></canvas>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <span class="bar-content">developed Emergency Services Technology by Steve Marvell,</span>
+  </div>
 </div>
-<script type="module" src="/src/main.ts"></script>
+<script src="/src/main.js"></script>
 </body>
 </html>
