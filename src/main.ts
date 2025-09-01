@@ -1,6 +1,8 @@
+// /src/main.ts
 document.addEventListener("DOMContentLoaded", () => {
   const leftBar = document.getElementById("left-bar");
   const collapseBtn = document.getElementById("collapse-left-btn");
+
   let collapsed = false;
 
   function setCollapsed(state: boolean) {
@@ -16,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Canvas fix: correct TS typing
+  // Robust canvas selection and paint
   const canvas = document.getElementById("world-canvas") as HTMLCanvasElement | null;
   if (canvas && canvas.getContext) {
     const ctx = canvas.getContext("2d");

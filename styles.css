@@ -1,3 +1,4 @@
+/* styles.css */
 :root {
     --primary: #282e4b;
     --primary-dark: #17192a;
@@ -10,6 +11,7 @@
     --icon: #a7c7e7;
     --sea: #023047;
     --sea-border: #42aeea;
+    --collapsed-bar-width: 55px;
 }
 
 html, body {
@@ -25,10 +27,9 @@ html, body {
 .root {
     height: 100vh;
     width: 100vw;
-    overflow: hidden;
     display: grid;
     grid-template-rows: 56px 1fr 36px;
-    grid-template-columns: 64px 1fr;
+    grid-template-columns: var(--collapsed-bar-width) 1fr;
     grid-template-areas:
     "left-bar top-bar"
     "left-bar main-panel"
@@ -46,13 +47,15 @@ html, body {
     align-items: stretch;
     transition: width 0.35s, min-width 0.35s;
     width: 200px;
-    min-width: 44px;
+    min-width: var(--collapsed-bar-width);
+    max-width: 400px;
     position: relative;
 }
 
 .left-bar.collapsed {
-    width: 44px;
-    min-width: 44px;
+    width: var(--collapsed-bar-width);
+    min-width: var(--collapsed-bar-width);
+    max-width: var(--collapsed-bar-width);
 }
 
 .collapse-btn {
@@ -83,22 +86,20 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin: 0 2px;
-    margin-top: 4px;
+    margin: 4px 2px 0;
     align-items: stretch;
     transition: padding 0.35s;
 }
 
 .block {
     background: var(--block-bg);
-    border: 1.5px solid var(--block-border);
+    border: 2px solid var(--block-border);
     border-radius: 7px;
     outline: none;
     color: var(--accent);
     font-size: 1.1rem;
     font-family: inherit;
-    padding: 10px;
-    padding-left: 14px;
+    padding: 10px 10px 10px 14px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -146,13 +147,13 @@ html, body {
 .top-bar, .bottom-bar {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding-left: 2.8rem;
-    transition: padding-left 0.38s cubic-bezier(.77,0,.17,1.01);
+    justify-content: center;
+    padding-left: 0;
+    transition: none;
 }
 .top-bar {
     grid-area: top-bar;
-    background: var(--primary);
+    background: var(--primary-dark);
     color: var(--accent);
     font-size: 2rem;
     font-weight: 700;
@@ -168,19 +169,6 @@ html, body {
     font-style: italic;
     box-shadow: 0 -2px 8px rgba(15,30,60,0.14);
     height: 36px;
-}
-
-/* Slide bar content left when collapsed */
-.left-bar.collapsed ~ .top-bar .bar-content,
-.left-bar.collapsed ~ .main-panel,
-.left-bar.collapsed ~ .bottom-bar .bar-content {
-    padding-left: 0.75rem !important;
-    transition: padding-left 0.38s cubic-bezier(.77,0,.17,1.01);
-}
-.left-bar:not(.collapsed) ~ .top-bar .bar-content,
-.left-bar:not(.collapsed) ~ .main-panel,
-.left-bar:not(.collapsed) ~ .bottom-bar .bar-content {
-    padding-left: 0 !important;
 }
 
 .main-panel {

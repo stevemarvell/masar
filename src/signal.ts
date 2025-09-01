@@ -1,4 +1,4 @@
-// A SUPER simple reactive signal in TS:
+// /src/signal.ts
 export class Signal<T> {
   private listeners = new Set<(value: T) => void>();
   constructor(private value: T) {}
