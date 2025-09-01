@@ -1,29 +1,42 @@
 :root {
-    --primary: #282e4b;
-    --primary-dark: #17192a;
-    --accent: #f2f7f9;
-    --sidebar-bg: #151825;
-    --main-bg: #0b101a;
-    --block-bg: #222940;
-    --block-border: #5277a6;
-    --focus-shadow: #305080;
-    --icon: #a7c7e7;
-    --sea: #023047;
-    --sea-border: #42aeea;
-    --collapsed-bar-width: 55px;
+    /* sizes */
+    --sidebar-width: 200px;
+    --bar-height: 48px;         /* same depth for top and bottom bars */
 
-    /* vertical nudges */
-    --nudge-open: 1px;       /* open: tiny downshift */
-    --nudge-collapsed: 3px;  /* collapsed: lower */
+    /* backgrounds */
+    --edge-bg: #05060a;         /* bars + page edge */
+    --main-bg: #0a0f16;         /* main panel + block tiles */
+    --canvas-bg: #0b1420;
+
+    /* accents */
+    --accent: #d7dde6;
+    --icon: #b9c6d6;
+
+    /* lines */
+    --block-border: #1b2434;
+    --focus-shadow: #2a3952;
+
+    /* canvas frame */
+    --sea: #0a1120;
+    --sea-border: #1a273a;
+
+    /* spacing */
+    --bar-pad-x: 14px;          /* horizontal padding for top/bottom bars */
+    --bar-pad-y-left: 10px;     /* extra bottom padding inside left bar */
+    --below-topbar-gap: 0px;    /* extra gap under top bar if needed */
 }
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    font-family: "Segoe UI", "Roboto", Arial, sans-serif;
-    background: var(--main-bg);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--edge-bg);
     color: var(--accent);
 }
 
@@ -31,172 +44,105 @@ html, body {
     height: 100vh;
     width: 100vw;
     display: grid;
-    grid-template-rows: 56px 1fr 36px;
-    grid-template-columns: var(--collapsed-bar-width) 1fr;
+    grid-template-rows: var(--bar-height) 1fr var(--bar-height);  /* equal bar depths */
+    grid-template-columns: var(--sidebar-width) 1fr;
     grid-template-areas:
     "left-bar top-bar"
     "left-bar main-panel"
     "left-bar bottom-bar";
-    background: var(--main-bg);
+    background: var(--edge-bg);
 }
 
+/* Bars */
 .left-bar {
     grid-area: left-bar;
-    background: var(--sidebar-bg);
-    overflow-x: hidden;
-    overflow-y: auto;
+    background: var(--edge-bg);
+    /* start content just below the top bar depth */
+    padding: calc(var(--bar-height) + var(--below-topbar-gap)) var(--bar-pad-x) var(--bar-pad-y-left);
+    overflow: auto;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    transition: width 0.35s, min-width 0.35s;
-    width: 200px;
-    min-width: var(--collapsed-bar-width);
-    max-width: 400px;
-    position: relative;
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    scrollbar-gutter: stable;
 }
 
-.left-bar.collapsed {
-    width: var(--collapsed-bar-width);
-    min-width: var(--collapsed-bar-width);
-    max-width: var(--collapsed-bar-width);
-}
-
-.collapse-btn {
-    width: 36px;
-    height: 36px;
-    background: var(--primary-dark);
-    color: var(--accent);
-    border: none;
-    border-radius: 0 8px 8px 0;
-    margin: 4px 0 8px 4px;
-    padding: 0;
-    cursor: pointer;
-    font-size: 1.4rem;
-    box-shadow: 0 0 8px rgba(0,0,0,0.14);
+.top-bar,
+.bottom-bar {
+    background: var(--edge-bg);
+    height: var(--bar-height);               /* same visual depth */
+    padding: 0 var(--bar-pad-x);             /* horizontal only to preserve height */
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.16s;
-    align-self: flex-start;
-    z-index: 1;
-}
-
-.collapse-btn:hover {
-    background: var(--focus-shadow);
-}
-
-.block-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin: 4px 2px 0;
-    align-items: stretch;
-    transition: padding 0.35s;
-}
-
-.block {
-    background: var(--block-bg);
-    border: 2px solid var(--block-border);
-    border-radius: 7px;
-    outline: none;
-    color: var(--accent);
-    font-size: 1.1rem;
-    font-family: inherit;
-    padding: 10px 10px 10px 14px;
-    display: flex;
-    align-items: center;        /* vertical centering */
-    gap: 12px;
-    transition: box-shadow 0.15s, border-color 0.12s, background 0.20s;
-    cursor: pointer;
-    min-height: 44px;           /* consistent hit area */
-    line-height: 1;             /* stable metrics */
-}
-
-.block:focus {
-    box-shadow: 0 0 0 2px var(--focus-shadow);
-    border-color: var(--focus-shadow);
-    background: #223769;
-}
-
-/* ---------- Icon + label alignment ---------- */
-/* Use higher specificity to beat Font Awesome's .fa rules even if FA loads after */
-.left-bar .block .block-icon.fa-solid,
-.left-bar .block .block-icon.fa-regular,
-.left-bar .block .block-icon.fa-brands {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 1.6rem !important;
-    height: 1.6rem !important;
-    min-width: 1.6rem !important;
-    line-height: 1 !important;
-    vertical-align: middle !important;
-    transform: translateY(var(--nudge-open)) !important; /* small down nudge when open */
-    color: var(--icon) !important;
-}
-
-/* Label baseline aligned and optionally nudged to match */
-.left-bar .block .block-label {
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    transition: opacity 0.3s, width 0.3s, margin 0.3s, transform 0.2s;
-    transform: translateY(var(--nudge-open));
-}
-
-/* Collapsed state: center content horizontally and lower slightly more */
-.left-bar.collapsed .block {
-    justify-content: center;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.left-bar.collapsed .block .block-icon.fa-solid,
-.left-bar.collapsed .block .block-icon.fa-regular,
-.left-bar.collapsed .block .block-icon.fa-brands {
-    transform: translateY(var(--nudge-collapsed)) !important;
-}
-
-/* Hide label when collapsed */
-.left-bar.collapsed .block .block-label {
-    opacity: 0;
-    width: 0;
-    margin: 0;
-    pointer-events: none;
-    transform: none; /* avoid ghost movement */
-}
-
-/* ------------------------------------------- */
-
-.top-bar, .bottom-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 0;
-    transition: none;
 }
 
 .top-bar {
     grid-area: top-bar;
-    background: var(--primary-dark);
     color: var(--accent);
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-    box-shadow: 0 2px 8px rgba(15,30,60,0.18);
-    height: 56px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--block-border);
 }
 
 .bottom-bar {
     grid-area: bottom-bar;
-    background: var(--primary-dark);
     color: var(--accent);
-    font-size: 1rem;
-    font-style: italic;
-    box-shadow: 0 -2px 8px rgba(15,30,60,0.14);
-    height: 36px;
+    font-size: 0.9rem;
+    border-top: 1px solid var(--block-border);
 }
 
+/* Block list */
+.block-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    align-items: stretch;
+}
+
+/* Blocks use MAIN background and gutters from left-bar padding */
+.block {
+    background: var(--main-bg);
+    border: 1px solid var(--block-border);
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    min-height: 40px;
+    line-height: 1;
+}
+
+.block:focus,
+.block:focus-visible {
+    outline: 2px solid var(--focus-shadow);
+    outline-offset: -2px;
+}
+
+.block-icon {
+    color: var(--icon);
+    font-size: 1.4rem;
+    min-width: 1.4rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.block-label {
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* Main panel */
 .main-panel {
     grid-area: main-panel;
     background: var(--main-bg);
@@ -208,27 +154,20 @@ html, body {
 
 .canvas-container {
     background: var(--sea);
-    border: 4px solid var(--sea-border);
-    border-radius: 16px;
-    padding: 18px 18px;
-    box-shadow: 0 4px 30px #021f39b8;
-    transition: border-color 0.2s;
+    border: 1px solid var(--sea-border);
+    border-radius: 0;
+    padding: 12px;
+    box-shadow: none;
 }
 
 #world-canvas {
     display: block;
-    border-radius: 12px;
-    background: #011624;
+    border-radius: 0;
+    background: var(--canvas-bg);
     max-width: 98%;
     max-height: 94%;
 }
 
-::-webkit-scrollbar {
-    width: 7px;
-    background: var(--sidebar-bg);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary-dark);
-    border-radius: 7px;
-}
+/* Scrollbars */
+::-webkit-scrollbar { width: 7px; background: var(--edge-bg); }
+::-webkit-scrollbar-thumb { background: var(--block-border); border-radius: 0; }
