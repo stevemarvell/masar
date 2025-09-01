@@ -1,4 +1,3 @@
-/* styles.css */
 :root {
     --primary: #282e4b;
     --primary-dark: #17192a;
@@ -12,6 +11,10 @@
     --sea: #023047;
     --sea-border: #42aeea;
     --collapsed-bar-width: 55px;
+
+    /* vertical nudges */
+    --nudge-open: 1px;       /* open: tiny downshift */
+    --nudge-collapsed: 3px;  /* collapsed: lower */
 }
 
 html, body {
@@ -101,10 +104,12 @@ html, body {
     font-family: inherit;
     padding: 10px 10px 10px 14px;
     display: flex;
-    align-items: center;
+    align-items: center;        /* vertical centering */
     gap: 12px;
     transition: box-shadow 0.15s, border-color 0.12s, background 0.20s;
     cursor: pointer;
+    min-height: 44px;           /* consistent hit area */
+    line-height: 1;             /* stable metrics */
 }
 
 .block:focus {
@@ -113,36 +118,55 @@ html, body {
     background: #223769;
 }
 
-.block-icon {
-    color: var(--icon);
-    font-size: 1.6rem;
-    min-width: 1.6rem;
+/* ---------- Icon + label alignment ---------- */
+/* Use higher specificity to beat Font Awesome's .fa rules even if FA loads after */
+.left-bar .block .block-icon.fa-solid,
+.left-bar .block .block-icon.fa-regular,
+.left-bar .block .block-icon.fa-brands {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+    min-width: 1.6rem !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    transform: translateY(var(--nudge-open)) !important; /* small down nudge when open */
+    color: var(--icon) !important;
 }
 
-.block-label {
-    transition: opacity 0.3s, width 0.3s, margin 0.3s;
+/* Label baseline aligned and optionally nudged to match */
+.left-bar .block .block-label {
+    display: inline-block;
+    line-height: 1;
     white-space: nowrap;
+    transition: opacity 0.3s, width 0.3s, margin 0.3s, transform 0.2s;
+    transform: translateY(var(--nudge-open));
 }
 
-.left-bar.collapsed .block-label {
-    opacity: 0;
-    width: 0;
-    margin: 0;
-    pointer-events: none;
-}
-
+/* Collapsed state: center content horizontally and lower slightly more */
 .left-bar.collapsed .block {
     justify-content: center;
     padding-left: 0;
     padding-right: 0;
 }
-.left-bar.collapsed .block-icon {
-    color: var(--icon);
+
+.left-bar.collapsed .block .block-icon.fa-solid,
+.left-bar.collapsed .block .block-icon.fa-regular,
+.left-bar.collapsed .block .block-icon.fa-brands {
+    transform: translateY(var(--nudge-collapsed)) !important;
 }
-.left-bar.collapsed .block-list {
-    margin: 8px 1px 0 1px;
-    gap: 10px;
+
+/* Hide label when collapsed */
+.left-bar.collapsed .block .block-label {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+    pointer-events: none;
+    transform: none; /* avoid ghost movement */
 }
+
+/* ------------------------------------------- */
 
 .top-bar, .bottom-bar {
     display: flex;
@@ -151,6 +175,7 @@ html, body {
     padding-left: 0;
     transition: none;
 }
+
 .top-bar {
     grid-area: top-bar;
     background: var(--primary-dark);
@@ -161,6 +186,7 @@ html, body {
     box-shadow: 0 2px 8px rgba(15,30,60,0.18);
     height: 56px;
 }
+
 .bottom-bar {
     grid-area: bottom-bar;
     background: var(--primary-dark);
@@ -179,6 +205,7 @@ html, body {
     justify-content: center;
     overflow: hidden;
 }
+
 .canvas-container {
     background: var(--sea);
     border: 4px solid var(--sea-border);
@@ -187,6 +214,7 @@ html, body {
     box-shadow: 0 4px 30px #021f39b8;
     transition: border-color 0.2s;
 }
+
 #world-canvas {
     display: block;
     border-radius: 12px;
@@ -199,6 +227,7 @@ html, body {
     width: 7px;
     background: var(--sidebar-bg);
 }
+
 ::-webkit-scrollbar-thumb {
     background: var(--primary-dark);
     border-radius: 7px;
