@@ -1,0 +1,14 @@
+.root {
+    display: grid;
+    grid-template-rows: 48px 1fr 32px;
+    grid-template-columns: 180px 1fr;
+    height: 100vh;
+    grid-template-areas:
+    "top-bar top-bar"
+    "left-bar main-panel"
+    "bottom-bar bottom-bar";
+}
+.top-bar { grid-area: top-bar; background: #3f51b5; color: white; }
+.left-bar { grid-area: left-bar; background: #eee; }
+.main-panel { grid-area: main-panel; }
+.bottom-bar { grid-area: bottom-bar; background: #3f51b5; color: white; }
