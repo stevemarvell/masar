@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Bulma Layout</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bulma Canvas Layout</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/canvas.css" />
 </head>
 <body>
-<aside class="sidebar menu p-3">
+<!-- Sidebar: visible tablet+ -->
+<aside class="sidebar menu p-3 is-hidden-mobile">
   <p class="menu-label">Menu</p>
   <ul class="menu-list">
     <li><a>Dashboard</a></li>
@@ -18,24 +19,40 @@
   </ul>
 </aside>
 
-<div class="main">
-  <header class="topbar navbar">
-    <div class="navbar-brand">
-      <a class="navbar-item">Top Bar</a>
-    </div>
-  </header>
+<!-- Top bar with burger: menu shows on mobile -->
+<header class="topbar navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item">Top Bar</a>
 
-  <section class="content section">
-    <div class="container">
-      <p>Main content goes here.</p>
-    </div>
-  </section>
+    <a role="button" class="navbar-burger is-hidden-tablet" aria-label="menu" aria-expanded="false"
+       data-target="mobileMenu" id="burger">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
 
-  <footer class="bottombar footer">
-    <div class="content has-text-centered">
-      <p>Bottom Bar</p>
+  <div id="mobileMenu" class="navbar-menu is-hidden-tablet">
+    <div class="navbar-start">
+      <a class="navbar-item">Dashboard</a>
+      <a class="navbar-item">Settings</a>
+      <a class="navbar-item">Profile</a>
     </div>
-  </footer>
-</div>
+  </div>
+</header>
+
+<main class="content">
+  <canvas id="mainCanvas" aria-label="Main canvas"></canvas>
+</main>
+
+<footer class="bottombar footer">
+  <div class="content has-text-centered">
+    <p>Bottom Bar</p>
+  </div>
+</footer>
+
+<!-- Vite can load TS directly -->
+<script type="module" src="/src/menu.ts"></script>
+<script type="module" src="/src/canvas.ts"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* Grid layout: left sidebar, top and bottom bars span to the right edge */
+/* Grid layout */
 body {
     margin: 0;
     display: grid;
@@ -16,10 +16,9 @@ body {
 .content   { grid-area: content; }
 .bottombar { grid-area: bottombar; }
 
-/* Optional: allow content to scroll independently if desired */
-/* .content { overflow: auto; } */
+.content { padding: 0; overflow: hidden; position: relative; }
 
-/* Simple mobile behaviour: hide sidebar and stack bars */
+/* Mobile: hide sidebar, bars span full width */
 @media (max-width: 768px) {
     body {
         grid-template-columns: 1fr;
@@ -28,5 +27,4 @@ body {
       "content"
       "bottombar";
     }
-    .sidebar { display: none; }
 }
